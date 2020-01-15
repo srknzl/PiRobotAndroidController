@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -41,11 +42,6 @@ public class ConnectThread extends Thread {
         // Cancel discovery because it otherwise slows down the connection.
         Bluetooth.bluetoothAdapter.cancelDiscovery();
         try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
             mmSocket.connect();
@@ -56,13 +52,14 @@ public class ConnectThread extends Thread {
             } catch (IOException closeException) {
                 Log.e("BLUETOOTH", "Could not close the client socket", closeException);
             }
-            Bluetooth.connected = true;
+            Bluetooth.connected = false;
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toolbar toolbar = context.findViewById(R.id.toolbar);
                     CheckBox c = toolbar.findViewById(R.id.connection_status);
-                    c.setChecked(true);
+                    c.setChecked(false);
+                    Toast.makeText(context,"Connection Lost!", Toast.LENGTH_SHORT).show();
                 }
             });
             return;
@@ -74,12 +71,16 @@ public class ConnectThread extends Thread {
                 Toolbar toolbar = context.findViewById(R.id.toolbar);
                 CheckBox c = toolbar.findViewById(R.id.connection_status);
                 c.setChecked(true);
+                Toast.makeText(context,"Connected!", Toast.LENGTH_SHORT).show();
             }
         });
 
         // The connection attempt succeeded. Perform work associated with
         // the connection in a separate thread.
-       // manageMyConnectedSocket(mmSocket);
+
+        CommunicationThread commThread = new CommunicationThread(mmSocket, context);
+        commThread.start();
+        Bluetooth.communicationThread = commThread;
     }
 
     // Closes the client socket and causes the thread to finish.

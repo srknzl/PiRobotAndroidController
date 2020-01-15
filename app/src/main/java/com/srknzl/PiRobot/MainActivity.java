@@ -1,13 +1,17 @@
 package com.srknzl.PiRobot;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,27 +25,58 @@ public class MainActivity extends AppCompatActivity {
     ListViewAdapter adapter;
     ArrayList<Model> arrayList = new ArrayList<>();
     final Context context = this;
+
+
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Discovery has found a device. Get the BluetoothDevice
+                // object and its info from the Intent.
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if(device!=null && device.getName().equals("raspberrypi")){
+                    Bluetooth.bluetoothAdapter.cancelDiscovery();
+                    ConnectThread connectThread = new ConnectThread(device, context);
+                    connectThread.start();
+                }
+            }
+        }
+    };
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         Button bluetoothButton = toolbar.findViewById(R.id.bluetooth_button);
-        final CheckBox c = toolbar.findViewById(R.id.connection_status);
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(receiver, filter);
 
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bluetooth.connectIfPaired(context);
+                boolean paired = Bluetooth.connectIfPaired(context);
+                if(!paired){
+                    boolean discovering = Bluetooth.bluetoothAdapter.startDiscovery();
+                    if(!discovering){
+                        Toast.makeText(context,"Cannot connect for some reason", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if(getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 //---------
         mainmenu();
 //-----------
     }
+
+
+
+
     public void setlist(Vector<String> titles, Vector<String> descs, Vector<Integer> icons) {// Title desc icon
         arrayList.clear();
         listView = findViewById(R.id.listView);
@@ -73,5 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 }

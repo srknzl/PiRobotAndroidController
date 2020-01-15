@@ -1,5 +1,6 @@
 package com.srknzl.PiRobot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,12 +14,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 public class NewActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Model> arrayList = new ArrayList<>();
     ListViewAdapter adapter;
+    final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +39,60 @@ public class NewActivity extends AppCompatActivity {
             extra(mContent);
             setContentView(R.layout.manuel_with_buttons);
 
-            Button b1 = this.findViewById(R.id.top);
-            b1.setOnClickListener(new View.OnClickListener() {
+            Button topButton = this.findViewById(R.id.forward);
+            Button backButton = this.findViewById(R.id.back);
+            Button leftButton = this.findViewById(R.id.left);
+            Button rightButton = this.findViewById(R.id.right);
+            Button stopButton = this.findViewById(R.id.stop);
+
+            topButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(NewActivity.this, "adfadf", Toast.LENGTH_SHORT).show();
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write("forward".getBytes(StandardCharsets.UTF_8));
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write("backward".getBytes(StandardCharsets.UTF_8));
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            leftButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write("left".getBytes(StandardCharsets.UTF_8));
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            rightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write("right".getBytes(StandardCharsets.UTF_8));
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            stopButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write("stop".getBytes(StandardCharsets.UTF_8));
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -48,10 +100,6 @@ public class NewActivity extends AppCompatActivity {
             extra(mContent);
             setContentView(R.layout.autonomous);
         }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
     String mcon="none";

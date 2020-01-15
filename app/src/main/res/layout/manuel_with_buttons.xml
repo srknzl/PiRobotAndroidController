@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/top"
+        android:id="@+id/forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -25,7 +25,7 @@
         android:text="Geri"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top" />
+        app:layout_constraintTop_toBottomOf="@+id/forward" />
 
     <Button
         android:id="@+id/left"
@@ -34,8 +34,8 @@
         android:layout_marginEnd="24dp"
         android:text="Sol"
         app:layout_constraintBottom_toTopOf="@+id/back"
-        app:layout_constraintEnd_toStartOf="@+id/top"
-        app:layout_constraintTop_toBottomOf="@+id/top" />
+        app:layout_constraintEnd_toStartOf="@+id/forward"
+        app:layout_constraintTop_toBottomOf="@+id/forward" />
 
     <Button
         android:id="@+id/right"
@@ -44,17 +44,17 @@
         android:layout_marginStart="24dp"
         android:text="Sağ"
         app:layout_constraintBottom_toTopOf="@+id/back"
-        app:layout_constraintStart_toEndOf="@+id/top"
-        app:layout_constraintTop_toBottomOf="@+id/top" />
+        app:layout_constraintStart_toEndOf="@+id/forward"
+        app:layout_constraintTop_toBottomOf="@+id/forward" />
 
     <Button
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop"
+        android:text="Dur"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toStartOf="@+id/right"
         app:layout_constraintStart_toEndOf="@+id/left"
-        app:layout_constraintTop_toBottomOf="@+id/top" />
+        app:layout_constraintTop_toBottomOf="@+id/forward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

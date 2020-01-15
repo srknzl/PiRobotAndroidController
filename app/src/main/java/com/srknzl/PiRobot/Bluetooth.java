@@ -8,11 +8,13 @@ import android.content.Context;
 import java.util.Set;
 
 public class Bluetooth {
-    public static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    public static boolean connected = false;
+    static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    static boolean connected = false;
+    static CommunicationThread communicationThread = null;
+
     /*
     Desc: Queries paired devices and connects to name raspberrypi if it exists in paired devices
-
+    Returns if paired
      */
     public static boolean connectIfPaired(Context c){
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -26,15 +28,10 @@ public class Bluetooth {
 
                     ConnectThread connectThread = new ConnectThread(device, c);
                     connectThread.start();
-                    try {
-                        connectThread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
+                    return true;
                 }
             }
         }
-        return connected;
+        return false;
     }
 }
