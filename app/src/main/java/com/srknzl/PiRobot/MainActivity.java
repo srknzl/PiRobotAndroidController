@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 pb.setVisibility(View.GONE);
                 deviceView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
-                Toast.makeText(context, "Scan finished!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Discovery successfully ended!", Toast.LENGTH_SHORT).show();
 
             }
         }
