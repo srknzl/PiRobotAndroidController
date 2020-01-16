@@ -23,9 +23,7 @@ public class Bluetooth {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
                 if(deviceName.equals("raspberrypi")){
-
                     ConnectThread connectThread = new ConnectThread(device, c);
                     connectThread.start();
                     return true;

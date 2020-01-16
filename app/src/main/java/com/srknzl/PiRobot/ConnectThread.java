@@ -64,12 +64,16 @@ public class ConnectThread extends Thread {
                     CheckBox c = context.findViewById(R.id.connection_status);
 
                     c.setChecked(false);
+
                     bgShader.setVisibility(View.GONE);
                     pb.setVisibility(View.GONE);
+                    ((MainActivity)context).deviceView.setVisibility(View.GONE);
+                    ((MainActivity)context).listView.setVisibility(View.VISIBLE);
+
                     if(Bluetooth.connected && Bluetooth.communicationThread != null){
                         Toast.makeText(context,"Connection Lost!", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(context,"Could not connect!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Could not connect, try again!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -85,8 +89,11 @@ public class ConnectThread extends Thread {
 
                 Toast.makeText(context,"Connected!", Toast.LENGTH_SHORT).show();
                 checkbox.setChecked(true);
+
                 bgShader.setVisibility(View.GONE);
                 pb.setVisibility(View.GONE);
+                ((MainActivity)context).deviceView.setVisibility(View.GONE);
+                ((MainActivity)context).listView.setVisibility(View.VISIBLE);
             }
         });
 
