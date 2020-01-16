@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(Bluetooth.communicationThread != null && Bluetooth.connected){
                     Toast.makeText(context, "Already connected!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (!Bluetooth.bluetoothAdapter.isEnabled()) {
                     final int REQUEST_ENABLE_BT = 23;
