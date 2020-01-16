@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
                 // Not to annoy user.
-                Toast.makeText(this, "Permission must be granted to use the app.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Bluetooth discovery permission must be granted to use the app.", Toast.LENGTH_SHORT).show();
             } else {
 
                 // Request permission.
@@ -122,12 +122,15 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             // Permission has already been granted.
-            Toast.makeText(this, "Permission already granted.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bluetooth discovery permission already granted.", Toast.LENGTH_SHORT).show();
         }
 
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(Bluetooth.communicationThread != null && Bluetooth.connected){
+                    Toast.makeText(context, "Already connected!", Toast.LENGTH_SHORT).show();
+                }
                 if (!Bluetooth.bluetoothAdapter.isEnabled()) {
                     final int REQUEST_ENABLE_BT = 23;
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
