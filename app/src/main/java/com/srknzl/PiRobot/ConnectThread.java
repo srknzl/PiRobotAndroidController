@@ -5,7 +5,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -56,10 +59,18 @@ public class ConnectThread extends Thread {
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toolbar toolbar = context.findViewById(R.id.toolbar);
-                    CheckBox c = toolbar.findViewById(R.id.connection_status);
+                    ProgressBar pb = context.findViewById(R.id.progressbar);
+                    LinearLayout bgShader = context.findViewById(R.id.background_shader);
+                    CheckBox c = context.findViewById(R.id.connection_status);
+
                     c.setChecked(false);
-                    Toast.makeText(context,"Connection Lost!", Toast.LENGTH_SHORT).show();
+                    bgShader.setVisibility(View.GONE);
+                    pb.setVisibility(View.GONE);
+                    if(Bluetooth.connected && Bluetooth.communicationThread != null){
+                        Toast.makeText(context,"Connection Lost!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(context,"Could not connect!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             return;
@@ -68,10 +79,14 @@ public class ConnectThread extends Thread {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toolbar toolbar = context.findViewById(R.id.toolbar);
-                CheckBox c = toolbar.findViewById(R.id.connection_status);
-                c.setChecked(true);
+                ProgressBar pb = context.findViewById(R.id.progressbar);
+                LinearLayout bgShader = context.findViewById(R.id.background_shader);
+                CheckBox checkbox = context.findViewById(R.id.connection_status);
+
                 Toast.makeText(context,"Connected!", Toast.LENGTH_SHORT).show();
+                checkbox.setChecked(true);
+                bgShader.setVisibility(View.GONE);
+                pb.setVisibility(View.GONE);
             }
         });
 

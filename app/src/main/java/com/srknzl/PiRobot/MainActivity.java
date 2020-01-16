@@ -10,7 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ListViewAdapter adapter;
     ArrayList<Model> arrayList = new ArrayList<>();
     final Context context = this;
-
+    Vector<BluetoothDevice> foundDevices = new Vector<>();
 
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                foundDevices.add(device);
                 if(device!=null && device.getName().equals("raspberrypi")){
                     Bluetooth.bluetoothAdapter.cancelDiscovery();
                     ConnectThread connectThread = new ConnectThread(device, context);
@@ -49,21 +53,36 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        Button bluetoothButton = toolbar.findViewById(R.id.bluetooth_button);
+        Button bluetoothButton = this.findViewById(R.id.bluetooth_button);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(receiver, filter);
+        CheckBox c = this.findViewById(R.id.connection_status);
+
+        if(Bluetooth.connected && Bluetooth.communicationThread != null){
+            c.setChecked(true);
+        }else{
+            c.setChecked(false);
+        }
+        final LinearLayout bgShader = this.findViewById(R.id.background_shader);
+        final ProgressBar pb = this.findViewById(R.id.progressbar);
 
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bgShader.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.VISIBLE);
+
                 boolean paired = Bluetooth.connectIfPaired(context);
                 if(!paired){
+                    foundDevices.clear();
                     boolean discovering = Bluetooth.bluetoothAdapter.startDiscovery();
                     if(!discovering){
                         Toast.makeText(context,"Cannot connect for some reason", Toast.LENGTH_SHORT).show();
                     }
                 }
+
+
             }
         });
         setSupportActionBar(toolbar);

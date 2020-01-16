@@ -3,6 +3,7 @@ package com.srknzl.PiRobot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -22,6 +24,7 @@ public class NewActivity extends AppCompatActivity {
     ArrayList<Model> arrayList = new ArrayList<>();
     ListViewAdapter adapter;
     final Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,7 @@ public class NewActivity extends AppCompatActivity {
             Button leftButton = this.findViewById(R.id.left);
             Button rightButton = this.findViewById(R.id.right);
             Button stopButton = this.findViewById(R.id.stop);
+            final Vibrator vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
 
             topButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,6 +57,7 @@ public class NewActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
+                    if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
             backButton.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +68,7 @@ public class NewActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
+                    if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
             leftButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +79,7 @@ public class NewActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
+                    if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
             rightButton.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +90,7 @@ public class NewActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
+                    if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
             stopButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +101,7 @@ public class NewActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
+                    if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
         }

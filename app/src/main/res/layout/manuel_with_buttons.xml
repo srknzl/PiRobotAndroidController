@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="İleri"
+        android:background="@drawable/responsive_button"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="Geri"
+        android:background="@drawable/responsive_button"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forward" />
@@ -33,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="Sol"
+        android:background="@drawable/responsive_button"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toStartOf="@+id/forward"
         app:layout_constraintTop_toBottomOf="@+id/forward" />
@@ -43,6 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Sağ"
+        android:background="@drawable/responsive_button"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintStart_toEndOf="@+id/forward"
         app:layout_constraintTop_toBottomOf="@+id/forward" />
@@ -52,6 +60,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dur"
+        android:background="@drawable/responsive_button"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toStartOf="@+id/right"
         app:layout_constraintStart_toEndOf="@+id/left"
