@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     deviceList.clear();
                     listView.setVisibility(View.GONE);
                     deviceView.setVisibility(View.VISIBLE);
+                    Toast.makeText(context, "Discovering...", Toast.LENGTH_SHORT).show();
 
                     boolean discovering = Bluetooth.bluetoothAdapter.startDiscovery();
                     if (!discovering) {

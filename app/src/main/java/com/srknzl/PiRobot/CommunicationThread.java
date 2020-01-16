@@ -71,6 +71,7 @@ public class CommunicationThread extends Thread {
                     CheckBox c = toolbar.findViewById(R.id.connection_status);
                     c.setChecked(false);
                     Toast.makeText(mainActivity, "Connection lost", Toast.LENGTH_LONG).show();
+                    Bluetooth.connected = false;
                 }
             });
             // Send a failure message back to the activity.
