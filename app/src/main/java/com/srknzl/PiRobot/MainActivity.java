@@ -201,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
         descs.add("Control the car with buttons");
         icons.add(R.drawable.car);
 
-        titles.add("Auto");
-        descs.add("Control the car in autonomous mode");
+        titles.add("Joystick");
+        descs.add("Control the car in joystick mode");
         icons.add(R.drawable.car);
 
         setlist(titles, descs, icons);

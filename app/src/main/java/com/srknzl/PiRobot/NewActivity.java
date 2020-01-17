@@ -1,20 +1,22 @@
 package com.srknzl.PiRobot;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class NewActivity extends AppCompatActivity {
     ListViewAdapter adapter;
     final Context context = this;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,12 @@ public class NewActivity extends AppCompatActivity {
             Button leftButton = this.findViewById(R.id.left);
             Button rightButton = this.findViewById(R.id.right);
             Button stopButton = this.findViewById(R.id.stop);
+            SeekBar speedBar = this.findViewById(R.id.speedBar);
+
+            speedBar.setProgress(50);
+
+            final TextView speedText = this.findViewById(R.id.speed_text);
+
             final Vibrator vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
 
             topButton.setOnClickListener(new View.OnClickListener() {
@@ -71,26 +80,47 @@ public class NewActivity extends AppCompatActivity {
                     if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
-            leftButton.setOnClickListener(new View.OnClickListener() {
+
+            leftButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View view) {
-                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
-                        Bluetooth.communicationThread.write("left".getBytes(StandardCharsets.UTF_8));
-                    }else{
-                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                            Bluetooth.communicationThread.write("left".getBytes(StandardCharsets.UTF_8));
+                        }else{
+                            Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                        }
+                        if(vibrator!=null)vibrator.vibrate(200);
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                            Bluetooth.communicationThread.write("stop".getBytes(StandardCharsets.UTF_8));
+                        }else{
+                            Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                        }
+                        if(vibrator!=null)vibrator.vibrate(200);
                     }
-                    if(vibrator!=null)vibrator.vibrate(200);
+                    return true;
                 }
             });
-            rightButton.setOnClickListener(new View.OnClickListener() {
+            rightButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View view) {
-                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
-                        Bluetooth.communicationThread.write("right".getBytes(StandardCharsets.UTF_8));
-                    }else{
-                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                            Bluetooth.communicationThread.write("right".getBytes(StandardCharsets.UTF_8));
+                        }else{
+                            Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                        }
+                        if(vibrator!=null)vibrator.vibrate(200);
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                            Bluetooth.communicationThread.write("stop".getBytes(StandardCharsets.UTF_8));
+                        }else{
+                            Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                        }
+                        if(vibrator!=null)vibrator.vibrate(200);
                     }
-                    if(vibrator!=null)vibrator.vibrate(200);
+                    return true;
                 }
             });
             stopButton.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +134,39 @@ public class NewActivity extends AppCompatActivity {
                     if(vibrator!=null)vibrator.vibrate(200);
                 }
             });
+
+            speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    double speed = (progress*1.0)/100;
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write(("speed "+ speed).getBytes(StandardCharsets.UTF_8));
+                        speedText.setText("Hız: %" + progress);
+                    }else{
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if(!(Bluetooth.communicationThread!=null && Bluetooth.connected)){
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                    if(vibrator!=null)vibrator.vibrate(200);
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if(!(Bluetooth.communicationThread!=null && Bluetooth.connected)){
+                        Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
+                    }
+                    if(vibrator!=null)vibrator.vibrate(200);
+                }
+            });
         }
-        if (mContent.equals("Auto")){
+        if (mContent.equals("Joystick")){
             extra(mContent);
-            setContentView(R.layout.autonomous);
+            setContentView(R.layout.joystick);
         }
 
     }
