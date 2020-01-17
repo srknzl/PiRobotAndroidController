@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
 public class NewActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Model> arrayList = new ArrayList<>();
@@ -167,6 +170,16 @@ public class NewActivity extends AppCompatActivity {
         if (mContent.equals("Joystick")){
             extra(mContent);
             setContentView(R.layout.joystick);
+
+            JoystickView joystick = this.findViewById(R.id.joystickController); // https://github.com/controlwear/virtual-joystick-android
+            joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+                @Override
+                public void onMove(int angle, int strength) {
+                    if(Bluetooth.communicationThread!=null && Bluetooth.connected){
+                        Bluetooth.communicationThread.write(("joystick "+ angle + " " + strength).getBytes(StandardCharsets.UTF_8));
+                    }
+                }
+            });
         }
 
     }

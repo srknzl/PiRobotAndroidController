@@ -80,9 +80,9 @@ public class ListViewAdapter extends BaseAdapter{
                     intent.putExtra("activityName", "ManuelWithButtons");
                     mContext.startActivity(intent);
                 }
-                if (modellist.get(position).getTitle().equals("Auto")){
+                if (modellist.get(position).getTitle().equals("Joystick")){
                     Intent intent = new Intent(mContext, NewActivity.class);
-                    intent.putExtra("activityName", "Auto");
+                    intent.putExtra("activityName", "Joystick");
                     mContext.startActivity(intent);
                 }
             }});
