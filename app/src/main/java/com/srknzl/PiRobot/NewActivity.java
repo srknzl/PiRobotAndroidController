@@ -144,7 +144,7 @@ public class NewActivity extends AppCompatActivity {
                     double speed = (progress*1.0)/100;
                     if(Bluetooth.communicationThread!=null && Bluetooth.connected){
                         Bluetooth.communicationThread.write(("speed "+ speed).getBytes(StandardCharsets.UTF_8));
-                        speedText.setText("Hız: %" + progress);
+                        speedText.setText("Speed: %" + progress);
                     }else{
                         Toast.makeText(context,"Connect first!",Toast.LENGTH_SHORT).show();
                     }
